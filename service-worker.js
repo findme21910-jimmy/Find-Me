@@ -1,11 +1,13 @@
-const CACHE_NAME = 'find-me-v1';
+const CACHE_NAME = 'find-me-v2';
 
 const FILES_TO_CACHE = [
   './',
   './index.html',
   './style.css',
   './app.js',
-  './manifest.json'
+  './manifest.json',
+  './icons/192.png',
+  './icons/512.png'
 ];
 
 self.addEventListener('install', event => {
