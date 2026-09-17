@@ -3,16 +3,405 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#7c3aed">
-    <meta name="description" content="Find Me - Sistema de apoyo para encontrar personas desaparecidas">
-    <title>Find Me</title>
-    <link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#7B2CBF">
 
+    <meta
+        name="theme-color"
+        content="#7c3aed"
+    >
+
+    <meta
+        name="description"
+        content="Find Me - Sistema de apoyo para encontrar personas desaparecidas"
+    >
+
+    <title>Find Me</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <link
+        rel="manifest"
+        href="manifest.json"
+    >
+
+    <meta
+        name="theme-color"
+        content="#7B2CBF"
+    >
+
+    <!-- =====================================================
+         PRECARGA DEL LOGO PARA LA PANTALLA DE INICIO
+         ===================================================== -->
+
+    <link
+        rel="preload"
+        as="image"
+        href="./icons/icon-192.png?splash=2"
+        fetchpriority="high"
+    >
+
+    <!-- =====================================================
+         PANTALLA DE INICIO FIND ME
+         ===================================================== -->
+
+    <style>
+        #findmeSplash {
+            position: fixed;
+            inset: 0;
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 100%;
+            height: 100%;
+            min-height: 100vh;
+
+            background: #000000;
+
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+
+            transition:
+                opacity 1s ease,
+                visibility 1s ease;
+        }
+
+        #findmeSplash.findme-splash-oculto {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .findme-splash-contenido {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            width: 100%;
+            text-align: center;
+        }
+
+        .findme-splash-icono {
+            display: block;
+
+            width: 170px;
+            height: 170px;
+
+            min-width: 170px;
+            min-height: 170px;
+
+            object-fit: contain;
+
+            opacity: 0;
+            transform: scale(0.72);
+
+            animation:
+                findmeSplashIcono
+                2.4s
+                cubic-bezier(0.22, 1, 0.36, 1)
+                forwards;
+        }
+
+        .findme-splash-nombre {
+            margin-top: 22px;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-size: 52px;
+            font-weight: 700;
+
+            letter-spacing: -1.8px;
+            line-height: 1;
+
+            white-space: nowrap;
+
+            opacity: 0;
+            transform: translateY(16px);
+
+            animation:
+                findmeSplashTexto
+                1.4s
+                ease
+                forwards;
+
+            animation-delay: 1.7s;
+        }
+
+        .findme-splash-find {
+            color: #ffffff;
+        }
+
+        .findme-splash-me {
+            color: #a78bfa;
+        }
+
+        @keyframes findmeSplashIcono {
+
+            0% {
+                opacity: 0;
+                transform: scale(0.72);
+            }
+
+            35% {
+                opacity: 0.45;
+                transform: scale(0.88);
+            }
+
+            70% {
+                opacity: 0.9;
+                transform: scale(1.04);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+        }
+
+        @keyframes findmeSplashTexto {
+
+            0% {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .findme-splash-icono {
+                width: 140px;
+                height: 140px;
+
+                min-width: 140px;
+                min-height: 140px;
+            }
+
+            .findme-splash-nombre {
+                margin-top: 18px;
+                font-size: 42px;
+                letter-spacing: -1.4px;
+            }
+
+        }
+    </style>
 </head>
 
 <body>
+
+<!-- =====================================================
+     PANTALLA DE INICIO FIND ME
+     ===================================================== -->
+
+<div
+    id="findmeSplash"
+    aria-hidden="true"
+>
+
+    <div class="findme-splash-contenido">
+
+        <img
+            src="./icons/icon-192.png?splash=2"
+            alt="Find Me"
+            class="findme-splash-icono"
+            width="170"
+            height="170"
+            decoding="async"
+            fetchpriority="high"
+        >
+
+        <div class="findme-splash-nombre">
+            <span class="findme-splash-find">Find</span><span class="findme-splash-me"> Me</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     BLOQUEO SIN INTERNET
+     ===================================================== -->
+
+<div
+    id="offlineOverlay"
+    class="offline-overlay oculto"
+    aria-hidden="true"
+>
+
+    <div class="offline-card">
+
+        <div class="offline-icono">
+
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
+                <path d="M1.5 8.5C7.3 3.5 16.7 3.5 22.5 8.5"></path>
+                <path d="M5 12.5c3.9-3.4 10.1-3.4 14 0"></path>
+                <path d="M8.8 16.3c1.9-1.5 4.5-1.5 6.4 0"></path>
+                <path d="M12 20h.01"></path>
+                <path d="M3 3l18 18"></path>
+            </svg>
+
+            <span>!</span>
+
+        </div>
+
+        <h2 id="offlineTitulo">
+            Sin conexión a Internet
+        </h2>
+
+        <p id="offlineMensaje">
+            No se ha detectado una conexión a Internet.
+            Find Me necesita Internet para funcionar.
+        </p>
+
+        <button
+            id="btnReintentarConexion"
+            type="button"
+            class="btn-reintentar-conexion"
+        >
+            Reintentar conexión
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SELECTOR DE IDIOMA
+     ===================================================== -->
+
+<div
+    id="modalIdioma"
+    class="modal-idioma-overlay oculto"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="tituloIdioma"
+>
+
+    <div class="modal-idioma">
+
+        <div class="idioma-cabecera">
+
+            <div class="idioma-logo">
+                Find Me
+            </div>
+
+            <span
+                class="idioma-etiqueta"
+                id="idiomaEtiqueta"
+            >
+                CONFIGURACIÓN INICIAL
+            </span>
+
+            <h2 id="tituloIdioma">
+                Selecciona tu idioma
+            </h2>
+
+            <p id="subtituloIdioma">
+                Elige el idioma que utilizarás en Find Me.
+            </p>
+
+        </div>
+
+
+        <div
+            id="listaIdiomas"
+            class="lista-idiomas"
+        >
+
+            <button
+                type="button"
+                class="idioma-opcion"
+                data-idioma="es"
+            >
+                <span class="idioma-bandera">🇪🇸</span>
+                <span class="idioma-nombre">Español</span>
+                <span class="idioma-check">✓</span>
+            </button>
+
+
+            <button
+                type="button"
+                class="idioma-opcion"
+                data-idioma="en"
+            >
+                <span class="idioma-bandera">🇺🇸</span>
+                <span class="idioma-nombre">English</span>
+                <span class="idioma-check">✓</span>
+            </button>
+
+
+            <button
+                type="button"
+                class="idioma-opcion"
+                data-idioma="pt"
+            >
+                <span class="idioma-bandera">🇧🇷</span>
+                <span class="idioma-nombre">Português</span>
+                <span class="idioma-check">✓</span>
+            </button>
+
+
+            <button
+                type="button"
+                class="idioma-opcion"
+                data-idioma="fr"
+            >
+                <span class="idioma-bandera">🇫🇷</span>
+                <span class="idioma-nombre">Français</span>
+                <span class="idioma-check">✓</span>
+            </button>
+
+
+            <button
+                type="button"
+                class="idioma-opcion"
+                data-idioma="it"
+            >
+                <span class="idioma-bandera">🇮🇹</span>
+                <span class="idioma-nombre">Italiano</span>
+                <span class="idioma-check">✓</span>
+            </button>
+
+
+            <button
+                type="button"
+                class="idioma-opcion"
+                data-idioma="de"
+            >
+                <span class="idioma-bandera">🇩🇪</span>
+                <span class="idioma-nombre">Deutsch</span>
+                <span class="idioma-check">✓</span>
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PANTALLA PRINCIPAL
+     ===================================================== -->
 
 <main id="app-container">
 
@@ -20,7 +409,10 @@
          PANTALLA 1: INICIO
          ===================================================== -->
 
-    <section id="pantalla-inicio" class="pantalla activa">
+    <section
+        id="pantalla-inicio"
+        class="pantalla activa"
+    >
 
         <header class="app-header inicio-header">
 
@@ -38,7 +430,11 @@
                         aria-label="Notificaciones"
                         type="button"
                     >
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
                             <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
                             <path d="M10 21h4"></path>
                         </svg>
@@ -48,8 +444,12 @@
                             class="contador-notificaciones oculto"
                             aria-live="polite"
                             aria-label="0 notificaciones"
-                        >0</span>
+                        >
+                            0
+                        </span>
+
                     </button>
+
 
                     <button
                         id="btnPerfil"
@@ -57,12 +457,27 @@
                         aria-label="Mi cuenta"
                         type="button"
                     >
+
                         <span class="perfil-placeholder">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <circle cx="12" cy="8" r="3.5"></circle>
-                                <path d="M5 21c.8-4.2 3.1-6.5 7-6.5s6.2 2.3 7 6.5"></path>
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="3.5"
+                                ></circle>
+
+                                <path
+                                    d="M5 21c.8-4.2 3.1-6.5 7-6.5s6.2 2.3 7 6.5"
+                                ></path>
+
                             </svg>
+
                         </span>
+
                     </button>
 
                 </div>
@@ -71,13 +486,17 @@
 
         </header>
 
+
         <div class="inicio-contenido">
 
             <div class="titulo-personas-registradas">
                 Personas registradas
             </div>
 
-            <div id="contenedorTarjetas" class="lista-alertas"></div>
+            <div
+                id="contenedorTarjetas"
+                class="lista-alertas"
+            ></div>
 
         </div>
 
@@ -88,15 +507,22 @@
          PANTALLA 2: ZONAS
          ===================================================== -->
 
-    <section id="pantalla-zonas" class="pantalla">
+    <section
+        id="pantalla-zonas"
+        class="pantalla"
+    >
 
         <header class="app-header">
 
             <div class="header-content">
 
-                <span class="header-label">FIND ME</span>
+                <span class="header-label">
+                    FIND ME
+                </span>
 
-                <h1>Cobertura nacional</h1>
+                <h1>
+                    Cobertura nacional
+                </h1>
 
                 <p id="ubicacion-dispositivo">
                     Detectando tu ubicación...
@@ -106,16 +532,31 @@
 
         </header>
 
+
         <div class="buscador-zona">
 
             <div class="input-icon-wrap">
 
                 <span class="campo-icono">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="11" cy="11" r="6.5"></circle>
-                        <path d="M16 16L21 21"></path>
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <circle
+                            cx="11"
+                            cy="11"
+                            r="6.5"
+                        ></circle>
+
+                        <path
+                            d="M16 16L21 21"
+                        ></path>
+
                     </svg>
+
                 </span>
+
 
                 <input
                     type="text"
@@ -128,7 +569,11 @@
 
         </div>
 
-        <div id="lista-regiones" class="lista-regiones"></div>
+
+        <div
+            id="lista-regiones"
+            class="lista-regiones"
+        ></div>
 
     </section>
 
@@ -137,15 +582,22 @@
          PANTALLA 3: ESCÁNER FACIAL
          ===================================================== -->
 
-    <section id="pantalla-escaner" class="pantalla">
+    <section
+        id="pantalla-escaner"
+        class="pantalla"
+    >
 
         <header class="app-header">
 
             <div class="header-content">
 
-                <span class="header-label">FIND ME AI</span>
+                <span class="header-label">
+                    FIND ME AI
+                </span>
 
-                <h1>Análisis facial</h1>
+                <h1>
+                    Análisis facial
+                </h1>
 
                 <p>
                     Compara dos imágenes para detectar similitudes
@@ -155,6 +607,7 @@
 
         </header>
 
+
         <div class="panel-escaner">
 
             <div class="caja-subida">
@@ -162,11 +615,25 @@
                 <div class="titulo-carga">
 
                     <span class="icono-carga">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="12" cy="8" r="3"></circle>
-                            <path d="M5 21c.8-4 3.1-6 7-6s6.2 2 7 6"></path>
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <circle
+                                cx="12"
+                                cy="8"
+                                r="3"
+                            ></circle>
+
+                            <path
+                                d="M5 21c.8-4 3.1-6 7-6s6.2 2 7 6"
+                            ></path>
+
                         </svg>
+
                     </span>
+
 
                     <label for="fotoDesaparecido">
                         1. Persona desaparecida
@@ -174,13 +641,18 @@
 
                 </div>
 
+
                 <input
                     type="file"
                     id="fotoDesaparecido"
                     accept="image/*"
                 >
 
-                <div id="previewDesaparecido" class="preview-foto">
+
+                <div
+                    id="previewDesaparecido"
+                    class="preview-foto"
+                >
                     Sin imagen seleccionada
                 </div>
 
@@ -192,12 +664,33 @@
                 <div class="titulo-carga">
 
                     <span class="icono-carga">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-                            <circle cx="12" cy="12" r="3"></circle>
-                            <path d="M8 8h.01M16 8h.01"></path>
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="14"
+                                rx="2"
+                            ></rect>
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="3"
+                            ></circle>
+
+                            <path
+                                d="M8 8h.01M16 8h.01"
+                            ></path>
+
                         </svg>
+
                     </span>
+
 
                     <label for="fotoEncontrado">
                         2. Persona avistada
@@ -205,13 +698,18 @@
 
                 </div>
 
+
                 <input
                     type="file"
                     id="fotoEncontrado"
                     accept="image/*"
                 >
 
-                <div id="previewEncontrado" class="preview-foto">
+
+                <div
+                    id="previewEncontrado"
+                    class="preview-foto"
+                >
                     Sin imagen seleccionada
                 </div>
 
@@ -227,7 +725,10 @@
             </button>
 
 
-            <div id="radar-escaner" class="radar oculto">
+            <div
+                id="radar-escaner"
+                class="radar oculto"
+            >
 
                 <div class="radar-grid"></div>
 
@@ -235,13 +736,30 @@
 
                 <div class="radar-icono">
 
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="12" cy="12" r="8"></circle>
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M12 4v-2M12 22v-2M4 12H2M22 12h-2"></path>
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="8"
+                        ></circle>
+
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="3"
+                        ></circle>
+
+                        <path
+                            d="M12 4v-2M12 22v-2M4 12H2M22 12h-2"
+                        ></path>
+
                     </svg>
 
                 </div>
+
 
                 <p>
                     Analizando puntos faciales y estructuras de referencia...
@@ -250,26 +768,51 @@
             </div>
 
 
-            <div id="resultado-analisis" class="resultado-caja oculto">
+            <div
+                id="resultado-analisis"
+                class="resultado-caja oculto"
+            >
 
                 <div class="resultado-icono">
 
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M12 3l7 4v5c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V7l7-4z"></path>
-                        <path d="M9 12l2 2 4-4"></path>
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M12 3l7 4v5c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V7l7-4z"
+                        ></path>
+
+                        <path
+                            d="M9 12l2 2 4-4"
+                        ></path>
+
                     </svg>
 
                 </div>
 
-                <h3>Resultado de comparación</h3>
+
+                <h3>
+                    Resultado de comparación
+                </h3>
+
 
                 <div class="porcentaje-barra">
-                    <div id="barra-llenado" class="llenado"></div>
+
+                    <div
+                        id="barra-llenado"
+                        class="llenado"
+                    ></div>
+
                 </div>
+
 
                 <p id="texto-coincidencia"></p>
 
-                <p id="detalles-biometricos" class="detalles-texto"></p>
+                <p
+                    id="detalles-biometricos"
+                    class="detalles-texto"
+                ></p>
 
             </div>
 
@@ -282,15 +825,22 @@
          PANTALLA 4: REPORTAR
          ===================================================== -->
 
-    <section id="pantalla-reportar" class="pantalla">
+    <section
+        id="pantalla-reportar"
+        class="pantalla"
+    >
 
         <header class="app-header">
 
             <div class="header-content">
 
-                <span class="header-label">FIND ME</span>
+                <span class="header-label">
+                    FIND ME
+                </span>
 
-                <h1>Reportar desaparición</h1>
+                <h1>
+                    Reportar desaparición
+                </h1>
 
                 <p>
                     Registra un caso para alertar a la comunidad
@@ -301,7 +851,10 @@
         </header>
 
 
-        <form id="formReportar" class="formulario-reporte">
+        <form
+            id="formReportar"
+            class="formulario-reporte"
+        >
 
             <div class="grupo-campo">
 
@@ -431,7 +984,10 @@
                     required
                 >
 
-                <div id="previewRepFoto" class="preview-foto">
+                <div
+                    id="previewRepFoto"
+                    class="preview-foto"
+                >
                     No se ha subido foto
                 </div>
 
@@ -458,15 +1014,22 @@
          PANTALLA 5: CONFIGURACIÓN
          ===================================================== -->
 
-    <section id="pantalla-configuracion" class="pantalla">
+    <section
+        id="pantalla-configuracion"
+        class="pantalla"
+    >
 
         <header class="app-header">
 
             <div class="header-content">
 
-                <span class="header-label">FIND ME</span>
+                <span class="header-label">
+                    FIND ME
+                </span>
 
-                <h1>Configuración</h1>
+                <h1>
+                    Configuración
+                </h1>
 
                 <p>
                     Personaliza tu cuenta y la apariencia de la aplicación
@@ -484,15 +1047,31 @@
                 <div class="config-titulo">
 
                     <span class="config-icono">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="12" cy="8" r="3.5"></circle>
-                            <path d="M5 21c.8-4.2 3.1-6.5 7-6.5s6.2 2.3 7 6.5"></path>
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <circle
+                                cx="12"
+                                cy="8"
+                                r="3.5"
+                            ></circle>
+
+                            <path
+                                d="M5 21c.8-4.2 3.1-6.5 7-6.5s6.2 2.3 7 6.5"
+                            ></path>
+
                         </svg>
+
                     </span>
+
 
                     <div>
 
-                        <h2>Tu cuenta</h2>
+                        <h2>
+                            Tu cuenta
+                        </h2>
 
                         <p>
                             Inicia sesión para guardar tus datos y casos.
@@ -505,18 +1084,35 @@
 
                 <div class="cuenta-estado">
 
-                    <div class="cuenta-avatar">
+                    <div
+                        id="cuentaAvatar"
+                        class="cuenta-avatar"
+                    >
 
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="12" cy="8" r="3.5"></circle>
-                            <path d="M5 21c.8-4.2 3.1-6.5 7-6.5s6.2 2.3 7 6.5"></path>
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <circle
+                                cx="12"
+                                cy="8"
+                                r="3.5"
+                            ></circle>
+
+                            <path
+                                d="M5 21c.8-4.2 3.1-6.5 7-6.5s6.2 2.3 7 6.5"
+                            ></path>
+
                         </svg>
 
                     </div>
 
+
                     <div class="cuenta-texto">
 
-                        <strong>Inicia sesión en Find Me</strong>
+                        <strong>
+                            Inicia sesión en Find Me
+                        </strong>
 
                         <span>
                             Guarda tu información en este dispositivo.
@@ -552,9 +1148,18 @@
 
                     <span class="cuenta-logo apple-logo">
 
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M16.7 12.7c0-2 1.6-3 1.7-3.1-.9-1.4-2.4-1.6-2.9-1.6-1.2-.1-2.3.7-2.9.7-.6 0-1.5-.7-2.5-.7-1.3 0-2.5.8-3.2 1.9-1.4 2.4-.4 6 1 7.9.7.9 1.4 1.9 2.4 2.4 1 0 1.4-.6 2.6-.6 1.2 0 1.5.6 2.6.6 1.1 0 1.8-.9 2.5-1.8.8-1 1.1-2 1.1-2.1-.1 0-2.4-.9-2.4-3.2z"></path>
-                            <path d="M15 6.7c.5-.7.9-1.7.8-2.7-.9 0-2 .6-2.6 1.3-.5.6-.9 1.6-.8 2.5 1 0 2-.5 2.6-1.1z"></path>
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M16.7 12.7c0-2 1.6-3 1.7-3.1-.9-1.4-2.4-1.6-2.9-1.6-1.2-.1-2.3.7-2.9.7-.6 0-1.5-.7-2.5-.7-1.3 0-2.5.8-3.2 1.9-1.4 2.4-.4 6 1 7.9.7.9 1.4 1.9 2.4 2.4 1 0 1.4-.6 2.6-.6 1.2 0 1.5.6 2.6.6 1.1 0 1.8-.9 2.5-1.8.8-1 1.1-2 1.1-2.1-.1 0-2.4-.9-2.4-3.2z"
+                            ></path>
+
+                            <path
+                                d="M15 6.7c.5-.7.9-1.7.8-2.7-.9 0-2 .6-2.6 1.3-.5.6-.9 1.6-.8 2.5 1 0 2-.5 2.6-1.1z"
+                            ></path>
+
                         </svg>
 
                     </span>
@@ -583,16 +1188,30 @@
 
                     <span class="config-icono">
 
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="12" cy="12" r="3"></circle>
-                            <path d="M19.4 15a1.8 1.8 0 0 0 .36 1.99l.05.05-1.7 1.7-.05-.05a1.8 1.8 0 0 0-1.99-.36 1.8 1.8 0 0 0-1.1 1.65V20h-2.4v-.02a1.8 1.8 0 0 0-1.1-1.65 1.8 1.8 0 0 0-1.99.36l-.05.05-1.7-1.7.05-.05A1.8 1.8 0 0 0 6.1 15a1.8 1.8 0 0 0-1.65-1.1H4v-2.4h.45A1.8 1.8 0 0 0 6.1 10a1.8 1.8 0 0 0-.36-1.99l-.05-.05 1.7-1.7.05.05a1.8 1.8 0 0 0 1.99.36 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7 1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7 1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1H20v2.4h-.45A1.8 1.8 0 0 0 19.4 15z"></path>
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="3"
+                            ></circle>
+
+                            <path
+                                d="M19.4 15a1.8 1.8 0 0 0 .36 1.99l.05.05-1.7 1.7-.05-.05a1.8 1.8 0 0 0-1.99-.36 1.8 1.8 0 0 0-1.1 1.65V20h-2.4v-.02a1.8 1.8 0 0 0-1.1-1.65 1.8 1.8 0 0 0-1.99.36l-.05.05-1.7-1.7.05-.05A1.8 1.8 0 0 0 6.1 15a1.8 1.8 0 0 0-1.65-1.1H4v-2.4h.45A1.8 1.8 0 0 0 6.1 10a1.8 1.8 0 0 0-.36-1.99l-.05-.05 1.7-1.7.05.05a1.8 1.8 0 0 0 1.99.36 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7 1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7-1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7-1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7-1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1l1.65 1.1"
+                            ></path>
+
                         </svg>
 
                     </span>
 
+
                     <div>
 
-                        <h2>Apariencia</h2>
+                        <h2>
+                            Apariencia
+                        </h2>
 
                         <p>
                             Selecciona cómo quieres ver Find Me
@@ -623,11 +1242,14 @@
 
                 </div>
 
+
                 <div class="tema-info">
 
                     <div>
 
-                        <strong>Modo claro</strong>
+                        <strong>
+                            Modo claro
+                        </strong>
 
                         <small>
                             Morado, blanco y gris
@@ -635,7 +1257,10 @@
 
                     </div>
 
-                    <span class="radio-tema" id="radio-claro"></span>
+                    <span
+                        class="radio-tema"
+                        id="radio-claro"
+                    ></span>
 
                 </div>
 
@@ -660,11 +1285,14 @@
 
                 </div>
 
+
                 <div class="tema-info">
 
                     <div>
 
-                        <strong>Modo oscuro</strong>
+                        <strong>
+                            Modo oscuro
+                        </strong>
 
                         <small>
                             Morado, negro y gris
@@ -672,11 +1300,73 @@
 
                     </div>
 
-                    <span class="radio-tema" id="radio-oscuro"></span>
+                    <span
+                        class="radio-tema"
+                        id="radio-oscuro"
+                    ></span>
 
                 </div>
 
             </button>
+
+
+            <!-- CAMBIO DE IDIOMA -->
+
+            <div class="config-seccion idioma-config-seccion">
+
+                <div class="config-titulo">
+
+                    <span class="config-icono">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="9"
+                            ></circle>
+
+                            <path d="M3 12h18"></path>
+
+                            <path
+                                d="M12 3c2.2 2.4 3.3 5.4 3.3 9S14.2 18.6 12 21"
+                            ></path>
+
+                            <path
+                                d="M12 3C9.8 5.4 8.7 8.4 8.7 12S9.8 18.6 12 21"
+                            ></path>
+
+                        </svg>
+
+                    </span>
+
+
+                    <div>
+
+                        <h2>
+                            Idioma
+                        </h2>
+
+                        <p>
+                            Cambia el idioma de Find Me
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="btnCambiarIdioma"
+                    type="button"
+                    class="btn-secundario"
+                >
+                    Cambiar idioma
+                </button>
+
+            </div>
 
 
             <div class="config-seccion privacidad-seccion">
@@ -684,15 +1374,29 @@
                 <div class="config-titulo">
 
                     <span class="config-icono">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M12 3l7 4v5c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V7l7-4z"></path>
-                            <path d="M9 12l2 2 4-4"></path>
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M12 3l7 4v5c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V7l7-4z"
+                            ></path>
+
+                            <path
+                                d="M9 12l2 2 4-4"
+                            ></path>
+
                         </svg>
+
                     </span>
+
 
                     <div>
 
-                        <h2>Privacidad y seguridad</h2>
+                        <h2>
+                            Privacidad y seguridad
+                        </h2>
 
                         <p>
                             Consulta los términos y cómo se utiliza la información en Find Me.
@@ -701,6 +1405,7 @@
                     </div>
 
                 </div>
+
 
                 <button
                     id="btnVerTerminos"
@@ -717,12 +1422,16 @@
 
                 <div class="config-footer-icon">
 
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
                         <path d="M12 3a9 9 0 1 0 9 9"></path>
                         <path d="M12 7v5l3 2"></path>
                     </svg>
 
                 </div>
+
 
                 <div>
 
@@ -749,41 +1458,74 @@
      NAVEGACIÓN INFERIOR
      ===================================================== -->
 
-<nav class="bottom-nav" aria-label="Navegación principal">
+<nav
+    class="bottom-nav"
+    aria-label="Navegación principal"
+>
 
-    <button class="nav-item activo" data-pantalla="pantalla-inicio" type="button">
+    <button
+        class="nav-item activo"
+        data-pantalla="pantalla-inicio"
+        type="button"
+    >
 
         <span class="icono">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
                 <path d="M3 11.5L12 4l9 7.5"></path>
                 <path d="M5.5 10.5V20h13v-9.5"></path>
                 <path d="M9.5 20v-5h5v5"></path>
             </svg>
+
         </span>
 
-        <span class="texto">Inicio</span>
+        <span class="texto">
+            Inicio
+        </span>
 
     </button>
 
 
-    <button class="nav-item" data-pantalla="pantalla-zonas" type="button">
+    <button
+        class="nav-item"
+        data-pantalla="pantalla-zonas"
+        type="button"
+    >
 
         <span class="icono">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
                 <path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"></path>
                 <circle cx="12" cy="9" r="2.5"></circle>
             </svg>
+
         </span>
 
-        <span class="texto">Zonas</span>
+        <span class="texto">
+            Zonas
+        </span>
 
     </button>
 
 
-    <button class="nav-item" data-pantalla="pantalla-escaner" type="button">
+    <button
+        class="nav-item"
+        data-pantalla="pantalla-escaner"
+        type="button"
+    >
 
         <span class="icono">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
                 <circle cx="12" cy="12" r="7"></circle>
                 <circle cx="12" cy="12" r="2.5"></circle>
                 <path d="M12 1.5v3"></path>
@@ -791,44 +1533,85 @@
                 <path d="M1.5 12h3"></path>
                 <path d="M19.5 12h3"></path>
             </svg>
+
         </span>
 
-        <span class="texto">Escáner</span>
+        <span class="texto">
+            Escáner
+        </span>
 
     </button>
 
 
-    <button class="nav-item" data-pantalla="pantalla-reportar" type="button">
+    <button
+        class="nav-item"
+        data-pantalla="pantalla-reportar"
+        type="button"
+    >
 
         <span class="icono">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="7" y="3" width="13" height="15" rx="2"></rect>
+
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
+                <rect
+                    x="7"
+                    y="3"
+                    width="13"
+                    height="15"
+                    rx="2"
+                ></rect>
+
                 <path d="M10 7h7"></path>
                 <path d="M10 10h7"></path>
                 <path d="M10 13h5"></path>
-                <rect x="4" y="6" width="13" height="15" rx="2"></rect>
+
+                <rect
+                    x="4"
+                    y="6"
+                    width="13"
+                    height="15"
+                    rx="2"
+                ></rect>
+
                 <path d="M7 10h7"></path>
                 <path d="M7 13h7"></path>
                 <path d="M7 16h5"></path>
+
             </svg>
+
         </span>
 
-        <span class="texto">Reportar</span>
+        <span class="texto">
+            Reportar
+        </span>
 
     </button>
 
 
-    <button class="nav-item" data-pantalla="pantalla-configuracion" type="button">
+    <button
+        class="nav-item"
+        data-pantalla="pantalla-configuracion"
+        type="button"
+    >
 
         <span class="icono">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
+
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
                 <path d="M4 6h16"></path>
                 <path d="M4 12h16"></path>
                 <path d="M4 18h16"></path>
             </svg>
+
         </span>
 
-        <span class="texto">Configuración</span>
+        <span class="texto">
+            Configuración
+        </span>
 
     </button>
 
@@ -839,7 +1622,10 @@
      MODAL EDITAR PERSONA
      ===================================================== -->
 
-<div id="modalEditar" class="modal-overlay oculto">
+<div
+    id="modalEditar"
+    class="modal-overlay oculto"
+>
 
     <div class="modal-editar">
 
@@ -852,7 +1638,10 @@
             ×
         </button>
 
-        <h2>Editar registro</h2>
+
+        <h2>
+            Editar registro
+        </h2>
 
         <p class="modal-subtitulo">
             Modifica los datos de la persona registrada.
@@ -956,6 +1745,148 @@
 
 
 <!-- =====================================================
+     MODAL CUENTA / PERFIL
+     ===================================================== -->
+
+<div
+    id="modalCuenta"
+    class="modal-overlay oculto"
+>
+
+    <div class="modal-cuenta">
+
+        <button
+            id="btnCerrarCuenta"
+            class="modal-cerrar"
+            type="button"
+            aria-label="Cerrar"
+        >
+            ×
+        </button>
+
+
+        <div class="perfil-modal-cabecera">
+
+            <div
+                id="perfilModalAvatar"
+                class="perfil-modal-avatar"
+            >
+                ?
+            </div>
+
+            <div>
+
+                <h2 id="tituloCuentaModal">
+                    Crear perfil
+                </h2>
+
+                <p id="subtituloCuentaModal">
+                    Completa tus datos para personalizar Find Me.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form id="formPerfil">
+
+            <div class="grupo-campo">
+
+                <label for="perfilUsuario">
+                    Nombre de usuario *
+                </label>
+
+                <input
+                    type="text"
+                    id="perfilUsuario"
+                    maxlength="40"
+                    required
+                    autocomplete="username"
+                    placeholder="Ej: Jimmy123"
+                >
+
+            </div>
+
+
+            <div class="grupo-campo">
+
+                <label for="perfilCorreo">
+                    Correo electrónico *
+                </label>
+
+                <input
+                    type="email"
+                    id="perfilCorreo"
+                    maxlength="120"
+                    required
+                    autocomplete="email"
+                    placeholder="correo@ejemplo.com"
+                >
+
+            </div>
+
+
+            <div class="grupo-campo">
+
+                <label for="perfilContrasena">
+                    Contraseña *
+                </label>
+
+                <input
+                    type="password"
+                    id="perfilContrasena"
+                    minlength="8"
+                    maxlength="120"
+                    required
+                    autocomplete="new-password"
+                    placeholder="Mínimo 8 caracteres"
+                >
+
+            </div>
+
+
+            <div class="grupo-campo">
+
+                <label for="perfilFoto">
+                    Foto de perfil
+                    <span class="campo-opcional">
+                        (opcional)
+                    </span>
+                </label>
+
+                <input
+                    type="file"
+                    id="perfilFoto"
+                    accept="image/*"
+                >
+
+                <div
+                    id="previewPerfilFoto"
+                    class="preview-foto"
+                >
+                    Sin foto de perfil
+                </div>
+
+            </div>
+
+
+            <button
+                id="btnGuardarPerfil"
+                type="submit"
+                class="btn-guardar"
+            >
+                Guardar perfil
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
      MODAL TÉRMINOS Y CONDICIONES
      ===================================================== -->
 
@@ -981,26 +1912,9 @@
 
         <div class="terminos-cabecera">
 
-            <div class="terminos-icono">
-
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 3l7 4v5c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V7l7-4z"></path>
-                    <path d="M9 12l2 2 4-4"></path>
-                </svg>
-
-            </div>
-
-            <div>
-
-                <p class="terminos-etiqueta">
-                    PRIVACIDAD Y SEGURIDAD
-                </p>
-
-                <h2 id="tituloTerminos">
-                    Términos y condiciones
-                </h2>
-
-            </div>
+            <h2 id="tituloTerminos">
+                Términos y privacidad
+            </h2>
 
         </div>
 
@@ -1013,7 +1927,10 @@
                 información registrada por los usuarios.
             </p>
 
-            <h3>1. Uso de la información</h3>
+
+            <h3>
+                1. Uso de la información
+            </h3>
 
             <p>
                 Find Me utiliza la información que registras, como nombre, edad, ciudad,
@@ -1021,7 +1938,10 @@
                 de la aplicación.
             </p>
 
-            <h3>2. Fotografías</h3>
+
+            <h3>
+                2. Fotografías
+            </h3>
 
             <p>
                 Las fotografías seleccionadas por el usuario se utilizan para los registros
@@ -1030,7 +1950,10 @@
                 legítima para hacerlo.
             </p>
 
-            <h3>3. Ubicación y GPS</h3>
+
+            <h3>
+                3. Ubicación y GPS
+            </h3>
 
             <p>
                 Find Me puede solicitar la ubicación del dispositivo para mostrar una
@@ -1038,7 +1961,10 @@
                 solicitará permiso antes de proporcionar la ubicación.
             </p>
 
-            <h3>4. Escáner facial</h3>
+
+            <h3>
+                4. Escáner facial
+            </h3>
 
             <p>
                 El escáner facial es una herramienta de apoyo. Sus resultados no constituyen
@@ -1047,7 +1973,10 @@
                 seguridad y las autorizaciones correspondientes.
             </p>
 
-            <h3>5. Responsabilidad del usuario</h3>
+
+            <h3>
+                5. Responsabilidad del usuario
+            </h3>
 
             <p>
                 La persona que registra un caso debe procurar que la información ingresada
@@ -1056,7 +1985,10 @@
                 persona.
             </p>
 
-            <h3>6. Find Me no reemplaza a las autoridades</h3>
+
+            <h3>
+                6. Find Me no reemplaza a las autoridades
+            </h3>
 
             <p>
                 Find Me es una herramienta de apoyo. No reemplaza a la Policía Nacional,
@@ -1065,7 +1997,10 @@
                 autoridades correspondientes.
             </p>
 
-            <h3>7. Privacidad</h3>
+
+            <h3>
+                7. Privacidad
+            </h3>
 
             <p>
                 La información de esta versión se almacena localmente en el navegador
@@ -1109,15 +2044,112 @@
 </div>
 
 
+<!-- =====================================================
+     LIBRERÍA DE ANÁLISIS FACIAL
+     ===================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"
+></script>
+
+
+<!-- =====================================================
+     APP
+     ===================================================== -->
+
 <script src="app.js"></script>
+
+
+<!-- =====================================================
+     ANIMACIÓN DE INICIO
+     ===================================================== -->
+
 <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./service-worker.js')
-        .then(() => console.log('Find Me: Service Worker registrado'))
-        .catch(error => console.error('Error:', error));
-    });
-  }
+
+(function () {
+
+    const splash = document.getElementById("findmeSplash");
+
+    if (!splash) {
+        return;
+    }
+
+    /*
+     * El splash comienza inmediatamente.
+     * No espera a que carguen face-api.js ni el resto
+     * de recursos externos.
+     */
+
+    const ocultarSplash = function () {
+
+        if (!document.body.contains(splash)) {
+            return;
+        }
+
+        splash.classList.add("findme-splash-oculto");
+
+        setTimeout(function () {
+
+            if (document.body.contains(splash)) {
+                splash.remove();
+            }
+
+        }, 1100);
+
+    };
+
+
+    /*
+     * Tiempo visible aproximado:
+     * 5.2 segundos + 1 segundo de desvanecimiento.
+     */
+
+    setTimeout(
+        ocultarSplash,
+        5200
+    );
+
+})();
+
 </script>
+
+
+<!-- =====================================================
+     SERVICE WORKER
+     ===================================================== -->
+
+<script>
+
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener(
+        "load",
+        () => {
+
+            navigator.serviceWorker
+                .register("./service-worker.js")
+                .then(
+                    () => {
+                        console.log(
+                            "Find Me: Service Worker registrado"
+                        );
+                    }
+                )
+                .catch(
+                    error => {
+                        console.error(
+                            "Find Me: error al registrar Service Worker:",
+                            error
+                        );
+                    }
+                );
+
+        }
+    );
+
+}
+
+</script>
+
 </body>
 </html>
