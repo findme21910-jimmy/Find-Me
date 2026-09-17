@@ -2,7 +2,7 @@
    FIND ME - SERVICE WORKER
    ========================================================= */
 
-const CACHE_NAME = "find-me-v5";
+const CACHE_NAME = "find-me-v6";
 
 const FILES_TO_CACHE = [
     "./",
@@ -10,8 +10,8 @@ const FILES_TO_CACHE = [
     "./style.css",
     "./app.js",
     "./manifest.json",
-    "./icons/192.png",
-    "./icons/512.png"
+    "./icons/icon-192.png",
+    "./icons/icon-512.png"
 ];
 
 /* =========================================================
@@ -25,9 +25,13 @@ self.addEventListener("install", event => {
         caches.open(CACHE_NAME)
             .then(cache => {
 
-                console.log("Find Me: guardando archivos...");
+                console.log(
+                    "Find Me: guardando archivos..."
+                );
 
-                return cache.addAll(FILES_TO_CACHE);
+                return cache.addAll(
+                    FILES_TO_CACHE
+                );
             })
             .catch(error => {
 
@@ -58,14 +62,18 @@ self.addEventListener("activate", event => {
 
                     cacheNames.map(cacheName => {
 
-                        if (cacheName !== CACHE_NAME) {
+                        if (
+                            cacheName !== CACHE_NAME
+                        ) {
 
                             console.log(
                                 "Find Me: eliminando caché antigua:",
                                 cacheName
                             );
 
-                            return caches.delete(cacheName);
+                            return caches.delete(
+                                cacheName
+                            );
                         }
 
                         return null;
@@ -116,7 +124,9 @@ self.addEventListener("fetch", event => {
         url.pathname.split("/").pop();
 
     const esArchivoPrincipal =
-        archivosPrincipales.includes(nombreArchivo);
+        archivosPrincipales.includes(
+            nombreArchivo
+        );
 
 
     /* =====================================================
@@ -164,15 +174,6 @@ self.addEventListener("fetch", event => {
             })
 
             .catch(() => {
-
-                /*
-                   Si no hay Internet, se devuelve
-                   la versión almacenada.
-
-                   app.js se encarga de bloquear
-                   la utilización de la aplicación
-                   cuando no existe conexión.
-                */
 
                 return caches.match(request);
             })
