@@ -2,7 +2,7 @@
    FIND ME - SERVICE WORKER
    ========================================================= */
 
-const CACHE_NAME = "find-me-v6";
+const CACHE_NAME = "find-me-v7";
 
 const FILES_TO_CACHE = [
     "./",
@@ -10,8 +10,8 @@ const FILES_TO_CACHE = [
     "./style.css",
     "./app.js",
     "./manifest.json",
-    "./icons/icon-192.png",
-    "./icons/icon-512.png"
+    "./icon-192.png",
+    "./icon-512.png"
 ];
 
 /* =========================================================

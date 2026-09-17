@@ -6,7 +6,7 @@
 
     <meta
         name="theme-color"
-        content="#7c3aed"
+        content="#7B2CBF"
     >
 
     <meta
@@ -26,21 +26,16 @@
         href="manifest.json"
     >
 
-    <meta
-        name="theme-color"
-        content="#7B2CBF"
-    >
-
     <!-- =====================================================
-     PRECARGA DEL LOGO PARA LA PANTALLA DE INICIO
-     ===================================================== -->
+         PRECARGA DEL LOGO PARA LA PANTALLA DE INICIO
+         ===================================================== -->
 
-<link
-    rel="preload"
-    as="image"
-    href="./icons/icon-192.png"
-    fetchpriority="high"
->
+    <link
+        rel="preload"
+        as="image"
+        href="./icon-192.png"
+        fetchpriority="high"
+    >
 
     <!-- =====================================================
          PANTALLA DE INICIO FIND ME
@@ -144,7 +139,6 @@
         }
 
         @keyframes findmeSplashIcono {
-
             0% {
                 opacity: 0;
                 transform: scale(0.72);
@@ -164,11 +158,9 @@
                 opacity: 1;
                 transform: scale(1);
             }
-
         }
 
         @keyframes findmeSplashTexto {
-
             0% {
                 opacity: 0;
                 transform: translateY(16px);
@@ -178,11 +170,9 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-
         }
 
         @media (max-width: 600px) {
-
             .findme-splash-icono {
                 width: 140px;
                 height: 140px;
@@ -196,7 +186,6 @@
                 font-size: 42px;
                 letter-spacing: -1.4px;
             }
-
         }
     </style>
 </head>
@@ -215,14 +204,14 @@
     <div class="findme-splash-contenido">
 
         <img
-    src="./icons/icon-192.png"
-    alt="Find Me"
-    class="findme-splash-icono"
-    width="170"
-    height="170"
-    decoding="async"
-    fetchpriority="high"
->
+            src="./icon-192.png"
+            alt="Find Me"
+            class="findme-splash-icono"
+            width="170"
+            height="170"
+            decoding="async"
+            fetchpriority="high"
+        >
 
         <div class="findme-splash-nombre">
             <span class="findme-splash-find">Find</span><span class="findme-splash-me"> Me</span>
@@ -1199,7 +1188,7 @@
                             ></circle>
 
                             <path
-                                d="M19.4 15a1.8 1.8 0 0 0 .36 1.99l.05.05-1.7 1.7-.05-.05a1.8 1.8 0 0 0-1.99-.36 1.8 1.8 0 0 0-1.1 1.65V20h-2.4v-.02a1.8 1.8 0 0 0-1.1-1.65 1.8 1.8 0 0 0-1.99.36l-.05.05-1.7-1.7.05-.05A1.8 1.8 0 0 0 6.1 15a1.8 1.8 0 0 0-1.65-1.1H4v-2.4h.45A1.8 1.8 0 0 0 6.1 10a1.8 1.8 0 0 0-.36-1.99l-.05-.05 1.7-1.7.05.05a1.8 1.8 0 0 0 1.99.36 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7 1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7-1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7-1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7-1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1l1.65 1.1"
+                                d="M19.4 15a1.8 1.8 0 0 0 .36 1.99l.05.05-1.7 1.7-.05-.05a1.8 1.8 0 0 0-1.99-.36 1.8 1.8 0 0 0-1.1 1.65V20h-2.4v-.02a1.8 1.8 0 0 0-1.1-1.65 1.8 1.8 0 0 0-1.99.36l-.05.05-1.7-1.7.05-.05A1.8 1.8 0 0 0 6.1 15a1.8 1.8 0 0 0-1.65-1.1H4v-2.4h.45A1.8 1.8 0 0 0 6.1 10a1.8 1.8 0 0 0-.36-1.99l-.05-.05 1.7-1.7.05.05a1.8 1.8 0 0 0 1.99.36 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7 1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7-1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7-1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65.36l.05-.05 1.7-1.7-.05.05a1.8 1.8 0 0 0-.36 1.99 1.8 1.8 0 0 0 1.65 1.1 1.8 1.8 0 0 0 1.65.36l1.65 1.1"
                             ></path>
 
                         </svg>
@@ -2074,12 +2063,6 @@
         return;
     }
 
-    /*
-     * El splash comienza inmediatamente.
-     * No espera a que carguen face-api.js ni el resto
-     * de recursos externos.
-     */
-
     const ocultarSplash = function () {
 
         if (!document.body.contains(splash)) {
@@ -2098,11 +2081,6 @@
 
     };
 
-
-    /*
-     * Tiempo visible aproximado:
-     * 5.2 segundos + 1 segundo de desvanecimiento.
-     */
 
     setTimeout(
         ocultarSplash,
